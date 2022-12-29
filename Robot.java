@@ -14,6 +14,24 @@ public class Robot extends Actor
      */
     public void act()
     {
-        // Add your action code here.
+        robotMovement();
+        detectWallCollision();
+        detectBlockCollision();
+    }
+    
+    public void robotMovement(){
+
+    }
+    
+    public void detectWallCollision(){
+        if(isTouching(Wall.class)){
+            setLocation(48, 50);
+        }
+    }
+    
+    public void detectBlockCollision(){
+        if(isTouching(Block.class)){
+            setLocation(48, 50);
+        }
     }
 }
