@@ -8,10 +8,22 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Robot extends Actor
 {
-    /**
-     * Act - do whatever the Robot wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
+    private GreenfootImage robotimage1;
+    private GreenfootImage robotimage2;
+    private GreenfootImage gameoverimage;
+    private int lives;
+    private int pizzaEaten;
+    private int score;
+    
+    public Robot(){
+        robotimage1= new GreenfootImage("man01.png");
+        robotimage2= new GreenfootImage("man02.png");
+        gameoverimage= new GreenfootImage("gameover.png");
+        lives = 3;
+        pizzaEaten = 0;
+        score = 0;
+    }
+    
     public void act()
     {
         robotMovement();
@@ -24,26 +36,30 @@ public class Robot extends Actor
     public void robotMovement(){
         if(Greenfoot.isKeyDown("right")){
             setLocation(getX()+3, getY());
+            animate();
         }
         
         if(Greenfoot.isKeyDown("left")){
             setLocation(getX()-3, getY());
+            animate();
         }
         
         if(Greenfoot.isKeyDown("down")){
             setLocation(getX(), getY()+3);
+            animate();
         }
         
         if(Greenfoot.isKeyDown("up")){
             setLocation(getX(), getY()-3);
+            animate();
         }
-
     }
     
     public void detectWallCollision(){
         if(isTouching(Wall.class)){
             setLocation(48, 50);
             Greenfoot.playSound("hurt.wav");
+            removeLife();
         }
     }
     
@@ -51,6 +67,7 @@ public class Robot extends Actor
         if(isTouching(Block.class)){
             setLocation(48, 50);
             Greenfoot.playSound("hurt.wav");
+            removeLife();
         }
     }
     
@@ -58,6 +75,11 @@ public class Robot extends Actor
         if(isTouching(Home.class)){
             setLocation(48, 50);
             Greenfoot.playSound("yipee.wav");
+            if(pizzaEaten==5){
+                Greenfoot.stop();
+                pizzaEaten = 0;
+            }
+            increaseScore();
         }
     }
     
@@ -65,6 +87,37 @@ public class Robot extends Actor
         if(isTouching(Pizza.class)){
             removeTouching(Pizza.class);
             Greenfoot.playSound("eat.wav");
+            pizzaEaten++;
         }
+    }
+    
+    public void animate(){
+        if(getImage()==robotimage1){
+            setImage(robotimage2);
+        } else
+            setImage(robotimage1);
+    }
+    
+    public void removeLife(){
+        lives--;
+        showStatus();
+        testEndGame();
+    }
+    
+    public void testEndGame(){
+        if(lives<=0){
+            setImage(gameoverimage);
+            Greenfoot.stop();
+        }
+    }
+    
+    public void increaseScore(){
+       score++;
+       showStatus();
+    }
+    
+    public void showStatus(){
+        getWorld().showText("Score : " + score, 70, 540);
+        getWorld().showText("Lives : " + lives, 70, 570);
     }
 }
