@@ -17,21 +17,54 @@ public class Robot extends Actor
         robotMovement();
         detectWallCollision();
         detectBlockCollision();
+        detectHome();
+        eatPizza();
     }
     
     public void robotMovement(){
+        if(Greenfoot.isKeyDown("right")){
+            setLocation(getX()+3, getY());
+        }
+        
+        if(Greenfoot.isKeyDown("left")){
+            setLocation(getX()-3, getY());
+        }
+        
+        if(Greenfoot.isKeyDown("down")){
+            setLocation(getX(), getY()+3);
+        }
+        
+        if(Greenfoot.isKeyDown("up")){
+            setLocation(getX(), getY()-3);
+        }
 
     }
     
     public void detectWallCollision(){
         if(isTouching(Wall.class)){
             setLocation(48, 50);
+            Greenfoot.playSound("hurt.wav");
         }
     }
     
     public void detectBlockCollision(){
         if(isTouching(Block.class)){
             setLocation(48, 50);
+            Greenfoot.playSound("hurt.wav");
+        }
+    }
+    
+    public void detectHome(){
+        if(isTouching(Home.class)){
+            setLocation(48, 50);
+            Greenfoot.playSound("yipee.wav");
+        }
+    }
+    
+    public void eatPizza(){
+        if(isTouching(Pizza.class)){
+            removeTouching(Pizza.class);
+            Greenfoot.playSound("eat.wav");
         }
     }
 }
