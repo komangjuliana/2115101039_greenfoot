@@ -8,30 +8,18 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Laser extends Actor
 {
-    /**
-     * Act - do whatever the Laser wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
+    private int timer = 10;
     public void act()
     {
-        // Add your action code here.
-        move(8);
-        laserCollision();
-        
+        move (5);
+        laserHit();
     }
-    
-    public void laserCollision(){
-        if(isTouching(Enemy.class)){
-            getWorld().addObject(
-                new Boom(),
-                getX(),
-                getY()
-            );
-            
+    public void laserHit(){
+        if (isTouching(Enemy.class)){
+            getWorld().addObject(new Dying(), getX(), getY());
             removeTouching(Enemy.class);
             getWorld().removeObject(this);
-        } else if(isAtEdge()){
+        } else if(isAtEdge())
             getWorld().removeObject(this);
-        }
-    }
+}
 }

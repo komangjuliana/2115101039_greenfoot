@@ -8,7 +8,6 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class MyWorld extends World
 {
-
     /**
      * Constructor for objects of class MyWorld.
      * 
@@ -16,38 +15,39 @@ public class MyWorld extends World
     public MyWorld()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(600, 400, 1); 
+        super(600, 400, 1);
         prepare();
     }
-    
-    /**
-     * Prepare the world for the start of the program.
-     * That is: create the initial objects and add them to the world.
-     */
-    private void prepare()
-    {
-
-        Enemy enemy = new Enemy();
-        addObject(enemy,554,118);
-        Enemy enemy2 = new Enemy();
-        addObject(enemy2,572,298);
-        hero hero = new hero();
-        addObject(hero,60,195);
-    }
-
     public void act(){
         spawnEnemy();
     }
     
-    public int timerEnemy =0;
+    private void prepare(){
+        Hero hero = new Hero();
+        addObject(hero,200,200);
+
+        Enemy enemy = new Enemy();
+        addObject (enemy,800,100);
+
+        EnemyLaser enemyLaser = new EnemyLaser();
+        addObject (enemyLaser,400,100);
+    }
+    public int timerEnemy = 0;
     public void spawnEnemy(){
-        if (timerEnemy==180){//jika timer=3 detik
-            //Enemy enemy = new Enemy();
-            addObject(new Enemy(), 599,Greenfoot.getRandomNumber(400));
-            timerEnemy = 0;
-        }else{
-            timerEnemy++;
+        if(timerEnemy==60){
+        int speed = Greenfoot.getRandomNumber(4)+1;
+        addObject(new Enemy(),599,Greenfoot.getRandomNumber(400));
+        timerEnemy = 0;
+    }else{
+        timerEnemy++;
         }
         
+        if(timerEnemy==30){
+        int speed = Greenfoot.getRandomNumber(2)+1;
+        addObject(new EnemyLaser(),599,Greenfoot.getRandomNumber(400));
+        timerEnemy = 0;
+    }else{
+        timerEnemy++;
+        }
     }
 }
