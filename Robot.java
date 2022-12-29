@@ -14,6 +14,8 @@ public class Robot extends Actor
     private int lives;
     private int pizzaEaten;
     private int score;
+    private int timer;
+    private final int MAXTIMER = 1000;
     
     public Robot(){
         robotimage1= new GreenfootImage("man01.png");
@@ -22,6 +24,7 @@ public class Robot extends Actor
         lives = 3;
         pizzaEaten = 0;
         score = 0;
+        timer = MAXTIMER;
     }
     
     public void act()
@@ -31,6 +34,7 @@ public class Robot extends Actor
         detectBlockCollision();
         detectHome();
         eatPizza();
+        updateTimer();
     }
     
     public void robotMovement(){
@@ -57,7 +61,6 @@ public class Robot extends Actor
     
     public void detectWallCollision(){
         if(isTouching(Wall.class)){
-            setLocation(48, 50);
             Greenfoot.playSound("hurt.wav");
             removeLife();
         }
@@ -65,7 +68,6 @@ public class Robot extends Actor
     
     public void detectBlockCollision(){
         if(isTouching(Block.class)){
-            setLocation(48, 50);
             Greenfoot.playSound("hurt.wav");
             removeLife();
         }
@@ -73,13 +75,16 @@ public class Robot extends Actor
     
     public void detectHome(){
         if(isTouching(Home.class)){
-            setLocation(48, 50);
+            resetPosition();
             Greenfoot.playSound("yipee.wav");
-            if(pizzaEaten==5){
+            if(pizzaEaten>=5){
                 Greenfoot.stop();
                 pizzaEaten = 0;
             }
             increaseScore();
+            RobotWorld myworld = (RobotWorld)getWorld();
+            myworld.increaseLevel();
+            resetTimer();
         }
     }
     
@@ -88,6 +93,7 @@ public class Robot extends Actor
             removeTouching(Pizza.class);
             Greenfoot.playSound("eat.wav");
             pizzaEaten++;
+            timer = timer + 200;
         }
     }
     
@@ -99,6 +105,7 @@ public class Robot extends Actor
     }
     
     public void removeLife(){
+        resetPosition();
         lives--;
         showStatus();
         testEndGame();
@@ -119,5 +126,22 @@ public class Robot extends Actor
     public void showStatus(){
         getWorld().showText("Score : " + score, 70, 540);
         getWorld().showText("Lives : " + lives, 70, 570);
+    }
+    
+    public void updateTimer(){
+        timer--;
+        getWorld().showText("Time : " + timer, 720, 20);
+        if(timer==0){
+            removeLife();
+            resetTimer();
+        }
+    }
+    
+    public void resetPosition(){
+        setLocation(48, 50);
+    }
+    
+    public void resetTimer(){
+        timer = MAXTIMER;
     }
 }

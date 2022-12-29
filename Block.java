@@ -8,12 +8,17 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Block extends Actor
 {
-    /**
-     * Act - do whatever the Block wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
+    int turnspeed;
+    
     public void act()
     {
-        turn(2);
+        turn(turnspeed);
+    }
+    
+    public Block(int maxturnspeed){
+        turnspeed = (Greenfoot.getRandomNumber(maxturnspeed) + -maxturnspeed);
+        if(turnspeed==0){
+            turnspeed = 1;
+        }
     }
 }

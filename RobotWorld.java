@@ -8,11 +8,9 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class RobotWorld extends World
 {
-
-    /**
-     * Constructor for objects of class MyWorld.
-     * 
-     */
+    int currentMaxTurnSpeed = 2;
+    int currentLevel = 1;
+    
     public RobotWorld()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
@@ -26,40 +24,52 @@ public class RobotWorld extends World
      */
     private void prepare()
     {
-        Robot robot = new Robot();
-        addObject(robot,48,50);
+        addObject(new Robot(),48,50);
         
-        Block block = new Block();
-        addObject(block,427,145);
+        addObject(new Block(2), 427, 145);    
         
-        Wall wall = new Wall();
-        addObject(wall, 52, 147);
-        Wall wall2 = new Wall();
-        addObject(wall2, 159, 147);
-        Wall wall3 = new Wall();
-        addObject(wall3, 266, 147);
-        Wall wall4 = new Wall();
-        addObject(wall4, 587, 147);
-        Wall wall5 = new Wall();
-        addObject(wall5, 692, 147);
-        Wall wall6 = new Wall();
-        addObject(wall6, 791, 147);
+        addObject(new Wall(), 52, 147);
+        addObject(new Wall(), 159, 147);
+        addObject(new Wall(), 266, 147);
+        addObject(new Wall(), 587, 147);
+        addObject(new Wall(), 692, 147);
+        addObject(new Wall(), 791, 147);
         
-        Home home = new Home();
-        addObject(home, 751, 552);
+        addObject(new Home(), 751, 552);
         
-        ScorePanel score = new ScorePanel();
-        addObject(score, 71, 554);
+        addObject(new ScorePanel(), 71, 554);
         
-        Pizza pizza = new Pizza();
-        addObject(pizza, 720, 46);
-        Pizza pizza2 = new Pizza();
-        addObject(pizza2, 433, 38);
-        Pizza pizza3 = new Pizza();
-        addObject(pizza3, 183, 302);
-        Pizza pizza4 = new Pizza();
-        addObject(pizza4, 682, 312);
-        Pizza pizza5 = new Pizza();
-        addObject(pizza5, 417, 537);
+        
+        addObject(new Pizza(), 720, 46);
+        addObject(new Pizza(), 433, 38);
+        addObject(new Pizza(), 183, 302);
+        addObject(new Pizza(), 682, 312);
+        addObject(new Pizza(), 417, 537);
+    }
+    
+    public void setUpLevel(){
+        
+        if(currentLevel==2){
+            currentMaxTurnSpeed++;
+            new Block(currentMaxTurnSpeed);
+            for(int i=0; i<5; i++){
+                int xCoord = Greenfoot.getRandomNumber(this.getWidth()-1);
+                int yCoord = Greenfoot.getRandomNumber(this.getHeight()-1);
+                addObject(new Pizza(), xCoord, yCoord);
+            }
+        } else if(currentLevel==3){
+            currentMaxTurnSpeed++;
+            new Block(currentMaxTurnSpeed);
+            for(int i=0; i<5; i++){
+                int xCoord = Greenfoot.getRandomNumber(this.getWidth()-1);
+                int yCoord = Greenfoot.getRandomNumber(this.getHeight()-1);
+                addObject(new Pizza(), xCoord, yCoord);
+            }
+        }
+    }
+    
+    public void increaseLevel(){
+        currentLevel++;
+        setUpLevel();
     }
 }
